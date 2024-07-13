@@ -22,6 +22,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService JwtService;
     private final UserDetailsService userDetailsService;
 
+    public JwtAuthenticationFilter(com.mavene.jwt_security.config.JwtService jwtService, UserDetailsService userDetailsService) {
+        JwtService = jwtService;
+        this.userDetailsService = userDetailsService;
+    }
+
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -41,14 +46,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
             if (JwtService.isTokenValid(jwt, userDetails)) {
-                var authToken = new UsernamePasswordAuthenticationToken(
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
                         userDetails.getAuthorities()
                 );
                 authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request
-    }
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
         }
-    }
+        filterChain.doFilter(request, response);}
 }
