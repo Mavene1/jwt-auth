@@ -22,11 +22,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService JwtService;
     private final UserDetailsService userDetailsService;
 
-    public JwtAuthenticationFilter(com.mavene.jwt_security.config.JwtService jwtService, UserDetailsService userDetailsService) {
-        JwtService = jwtService;
-        this.userDetailsService = userDetailsService;
-    }
-
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,

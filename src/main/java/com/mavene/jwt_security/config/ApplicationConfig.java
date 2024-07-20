@@ -20,10 +20,6 @@ public class ApplicationConfig {
 
     private final UserRepository repository;
 
-    public ApplicationConfig(UserRepository repository) {
-        this.repository = repository;
-    }
-
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
@@ -48,7 +44,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    private PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
